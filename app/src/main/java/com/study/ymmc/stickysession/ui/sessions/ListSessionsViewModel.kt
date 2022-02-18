@@ -1,43 +1,44 @@
 package com.study.ymmc.stickysession.ui.sessions
 
-import android.os.Handler
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.content.Context
+import androidx.lifecycle.*
+import com.study.ymmc.stickysession.data.SessionRepository
 import com.study.ymmc.stickysession.model.Session
 
 
-class ListSessionsViewModel: ViewModel() {
+class ListSessionsViewModel(private val sessionRepository: SessionRepository): ViewModel() {
 
+    val mutableSession: MutableLiveData<List<Session>> = MutableLiveData()
     val load: LiveData<Boolean>
+
         get() {
             return isLoad
         }
     val session: LiveData<List<Session>>
         get() {
-            return listSession
+            return mutableSession
         }
-    private val listSession: MutableLiveData<List<Session>> by lazy {
-        MutableLiveData<List<Session>>().also {
-        }
-    }
 
     val isLoad: MutableLiveData<Boolean> by lazy {
         MutableLiveData()
     }
 
-    public fun loadData() {
+    fun loadData(context: LifecycleOwner) {
         isLoad.value = true
-        Handler().postDelayed(Runnable {
-            listSession.postValue(listOf(
-                Session("Item", "", 0),
-                Session("Item 2", "", 0),
-                Session("Item 3", "", 0),
-                Session("Item 4", "", 0),
-                Session("Item 5", "", 0)
-            ))
+        sessionRepository.getSession().observe(context){ sessions ->
+            mutableSession.value = sessions
             isLoad.value = false
-        } ,2000L)
+        }
 
+    }
+
+}
+
+class ListSessionFactory() : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ListSessionsViewModel::class.java)) {
+            return ListSessionsViewModel(SessionRepository()) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
