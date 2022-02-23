@@ -3,6 +3,7 @@ package com.study.ymmc.stickysession.ui.sessions
 import android.content.Context
 import androidx.lifecycle.*
 import com.study.ymmc.stickysession.data.SessionRepository
+import com.study.ymmc.stickysession.data.remote.SessionRemoteData
 import com.study.ymmc.stickysession.model.Session
 
 
@@ -25,7 +26,7 @@ class ListSessionsViewModel(private val sessionRepository: SessionRepository): V
 
     fun loadData(context: LifecycleOwner) {
         isLoad.value = true
-        sessionRepository.getSession().observe(context){ sessions ->
+        sessionRepository.getSession("aa1107dc-0d30-40d8-97fd-31b2676df533").observe(context){ sessions ->
             mutableSession.value = sessions
             isLoad.value = false
         }
@@ -37,7 +38,7 @@ class ListSessionsViewModel(private val sessionRepository: SessionRepository): V
 class ListSessionFactory() : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ListSessionsViewModel::class.java)) {
-            return ListSessionsViewModel(SessionRepository()) as T
+            return ListSessionsViewModel(SessionRepository(SessionRemoteData())) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
