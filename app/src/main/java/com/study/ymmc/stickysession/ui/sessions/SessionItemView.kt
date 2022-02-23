@@ -8,7 +8,9 @@ import com.study.ymmc.stickysession.model.Session
 
 class SessionItemView(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var textTitle: TextView = itemView.findViewById(R.id.textSessionTitle)
+    var textDescription: TextView = itemView.findViewById(R.id.textSessionDescription)
     fun updateData(session: Session) {
         textTitle.text = session.name
+        textDescription.text = session.description
     }
 }
