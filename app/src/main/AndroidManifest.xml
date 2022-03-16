@@ -21,6 +21,8 @@
             android:name=".MainActivity"
             android:exported="true">
         </activity>
+        <service android:name=".service.RemoteRequestJobService"
+                 android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 
 </manifest>

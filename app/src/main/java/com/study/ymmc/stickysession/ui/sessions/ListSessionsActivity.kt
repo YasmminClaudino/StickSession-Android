@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.study.ymmc.stickysession.R
 import com.study.ymmc.stickysession.model.Session
 
-
 class ListSessionsActivity : AppCompatActivity() {
     private lateinit var adapter: ListSessionsAdapter
 
@@ -23,7 +22,7 @@ class ListSessionsActivity : AppCompatActivity() {
         listSession.adapter = adapter
         listSession.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,
             false)
-        val model = ViewModelProvider(this, ListSessionFactory()).get(ListSessionsViewModel::class.java)
+        val model = ViewModelProvider(this, ListSessionFactory(this)).get(ListSessionsViewModel::class.java)
         model.session.observe(this) { sessions ->
             adapter.updateList(sessions)
         }
