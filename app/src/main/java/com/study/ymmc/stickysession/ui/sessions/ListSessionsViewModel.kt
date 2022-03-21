@@ -4,8 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.study.ymmc.stickysession.data.SessionRepository
-import com.study.ymmc.stickysession.data.remote.SessionLocalData
-import com.study.ymmc.stickysession.data.remote.SessionRemoteData
 import com.study.ymmc.stickysession.data.remote.SessionSchedulerRemoteData
 import com.study.ymmc.stickysession.injection.ServiceLocator
 import com.study.ymmc.stickysession.model.Session
@@ -13,7 +11,10 @@ import com.study.ymmc.stickysession.model.Session
 
 class ListSessionsViewModel(private val sessionRepository: SessionRepository): ViewModel() {
 
-    val mutableSession: MutableLiveData<List<Session>> = MutableLiveData()
+    private val isLoad: MutableLiveData<Boolean> by lazy {
+        MutableLiveData()
+    }
+    private val mutableSession: MutableLiveData<List<Session>> = MutableLiveData()
     val load: LiveData<Boolean>
 
         get() {
@@ -23,10 +24,6 @@ class ListSessionsViewModel(private val sessionRepository: SessionRepository): V
         get() {
             return mutableSession
         }
-
-    val isLoad: MutableLiveData<Boolean> by lazy {
-        MutableLiveData()
-    }
 
     fun loadData(context: LifecycleOwner) {
         isLoad.value = true
